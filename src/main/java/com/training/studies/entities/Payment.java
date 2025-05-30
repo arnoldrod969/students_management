@@ -13,7 +13,6 @@ public class Payment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
     private LocalDate date;
 
     private double amount;

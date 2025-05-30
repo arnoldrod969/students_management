@@ -6,6 +6,7 @@ import com.training.studies.entities.PaymentType;
 import com.training.studies.entities.Student;
 import com.training.studies.repository.PaymentRepository;
 import com.training.studies.repository.StudentRepository;
+import com.training.studies.services.PaymentService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,9 +28,12 @@ public class PaymentRestController {
 
     private PaymentRepository paymentRepository ;
 
-    public PaymentRestController( StudentRepository studentRepository , PaymentRepository paymentRepository ){
+    private PaymentService paymentService ;
+
+    public PaymentRestController(StudentRepository studentRepository , PaymentRepository paymentRepository, PaymentService paymentService){
         this.studentRepository = studentRepository ;
         this.paymentRepository = paymentRepository ;
+        this.paymentService    = paymentService;
     }
 
     @GetMapping(path = "/payments")
@@ -77,10 +81,7 @@ public class PaymentRestController {
     @PutMapping(path = "/payments/{id}")
     public Payment updatePaymentByStatus(@RequestParam PaymentStatus status , @PathVariable Long id){
 
-        Payment payment = paymentRepository.findById(id).get();
-        payment.setStatus(status);
-
-        return paymentRepository.save(payment) ;
+        return this.paymentService.updatePaymentByStatus(status, id) ;
 
     }
 
@@ -88,30 +89,14 @@ public class PaymentRestController {
     public Payment savePayment(@RequestParam MultipartFile file , LocalDate date , double amount ,
                                PaymentType type , String studentCode) throws IOException {
 
-        Path folderPath = Paths.get(System.getProperty("user.home"),"Desktop","students_data","payments");
-        // Vérifier si le dossier existe, sinon le créer
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);
-            System.out.println("Dossier créé: " + folderPath);
-        }
-        String fileName = UUID.randomUUID().toString();
-        Path filePath = Paths.get(folderPath.toString() , fileName+".pdf") ;
-        Files.copy(file.getInputStream(),filePath);
+       return this.paymentService.savePayment(file,date,amount,type,studentCode);
 
-        Student student = studentRepository.findByCode(studentCode);
-        Payment payment = Payment.builder()
-                        .date(date).type(type)
-                        .student(student).amount(amount).file(filePath.toUri().toString())
-                        .status(PaymentStatus.CREATED)
-                        .build();
-
-        return paymentRepository.save(payment) ;
     }
 
     @GetMapping(path = "/paymentFile/{id}", produces = MediaType.APPLICATION_PDF_VALUE)
     public byte[] getPaymentFile(@PathVariable Long id ) throws IOException {
-        Payment payment = paymentRepository.findById(id).get();
-        return Files.readAllBytes(Path.of(URI.create(payment.getFile())));
+
+        return this.paymentService.getPaymentFile(id);
     }
 
 }
