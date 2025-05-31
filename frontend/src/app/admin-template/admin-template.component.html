@@ -1,37 +1,39 @@
 <mat-toolbar color="primary">
 
-  <button mat-icon-button>
+  <button mat-icon-button (click)="myDrawer.toggle()" >
     <mat-icon>menu</mat-icon>
   </button>
 
   <span style="flex: auto;"></span>
 
-  <button mat-button routerLink="/home">Accueil</button>
-  <button mat-button routerLink="/profile">Profil</button>
+  <button mat-button routerLink="/admin/home">Accueil</button>
+  <button mat-button routerLink="/admin/profile">Profil</button>
   <button mat-button [matMenuTriggerFor]="menuRef">
     <mat-icon iconPositionEnd >keyboard_arrow_down</mat-icon>
     Importer
   </button>
   <mat-menu #menuRef>
-    <button mat-menu-item routerLink="/loadStudents"> Etudiants </button>
-    <button mat-menu-item routerLink="/loadPayments"> Paiements </button>
+    <button mat-menu-item routerLink="/admin/loadStudents"> Etudiants </button>
+    <button mat-menu-item routerLink="/admin/loadPayments"> Paiements </button>
   </mat-menu>
-
-  <button mat-button mat-raised-button color="accent" routerLink="/login" >Se deconnecter</button>
+  <button mat-button *ngIf="authService.isAuthenticated"  >
+    {{ authService.email }}
+  </button>
+  <button mat-button mat-raised-button color="accent" (click)="logout()" >Se deconnecter</button>
 
 </mat-toolbar>
 
 <mat-drawer-container>
-  <mat-drawer opened="true" mode="side" position="start" >
+  <mat-drawer #myDrawer opened="true" mode="side" position="start" >
     <mat-list>
       <mat-list-item>
-        <button mat-button routerLink="/dashboard" > <mat-icon >dashboard</mat-icon> Tableau de bord </button>
+        <button mat-button routerLink="/admin/dashboard" > <mat-icon >dashboard</mat-icon> Tableau de bord </button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="/students" > <mat-icon >verified_user</mat-icon> Etudiants </button>
+        <button mat-button routerLink="/admin/students" > <mat-icon >verified_user</mat-icon> Etudiants </button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button routerLink="/payments" > <mat-icon >attach_money</mat-icon> Paiements </button>
+        <button mat-button routerLink="/admin/payments" > <mat-icon >attach_money</mat-icon> Paiements </button>
       </mat-list-item>
     </mat-list>
   </mat-drawer>
