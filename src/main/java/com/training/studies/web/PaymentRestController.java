@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin("*")
 public class PaymentRestController {
 
     private StudentRepository studentRepository ;

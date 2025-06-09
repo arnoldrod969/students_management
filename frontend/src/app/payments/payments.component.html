@@ -8,11 +8,51 @@
       <mat-divider></mat-divider>
       <br>
       <mat-card-content>
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem rem minus similique fugit itaque? Enim debitis doloremque rem corporis tenetur. Deleniti ut accusantium, atque consectetur esse aspernatur ipsa odio eos?
-Voluptatem excepturi consectetur molestias iure, rerum repellendus natus expedita quaerat alias similique possimus, itaque saepe at voluptate animi. Nemo sint incidunt ipsam fugit beatae tempore quam? Dolor perferendis cupiditate atque?
-Fugit voluptas aliquid dicta quo vero similique distinctio exercitationem quis, ipsa, reiciendis voluptate necessitatibus veritatis amet id quae eligendi iste recusandae, quisquam aspernatur accusantium consectetur unde nesciunt doloremque nisi. Dolorum?
-Perspiciatis, quae unde magni illo quis nemo consequatur voluptatibus voluptates deserunt aperiam obcaecati nobis, facilis ipsa qui maxime? Tempore ipsum error distinctio nostrum ullam quam ducimus eum harum ea perferendis?
-Quaerat, quibusdam tempora debitis nam aliquam ratione sed, vero doloremque veniam distinctio labore! Placeat vitae veniam, architecto sint animi corrupti et fugiat deleniti enim alias voluptatem optio necessitatibus ea error!
+
+        <table matSort mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+          <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Amount </th>
+            <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+
+          <!-- firstName Column -->
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Student </th>
+            <td mat-cell *matCellDef="let element"> {{element.student.firstName}} </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20 , 40 , 50]"
+                       showFirstLastButtons
+                       aria-label="Select page of periodic elements">
+        </mat-paginator>
+
       </mat-card-content>
       <br>
       <mat-card-footer>

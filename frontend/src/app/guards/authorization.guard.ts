@@ -20,9 +20,13 @@ export class AuthorizationGuard {
 
     if (this.authService.isAuthenticated) {
 
+      console.log(route);
+
       let requiredRoles = route.data['role'];
       let userRoles: String[] = this.authService.roles;
 
+      console.log("reqR="+requiredRoles);
+      console.log("userR="+userRoles);
       for (let role of userRoles) {
         if (requiredRoles.includes(role) ) {
           return true;
